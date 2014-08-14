@@ -76,8 +76,8 @@ def SummarizeUrl(url, limit=default_limit):
     if not article or not article.cleaned_text or not article.title:
         return None
 
-    text = str(article.cleaned_text.encode('utf-8', 'ignore'))
-    title = str(article.title.encode('utf-8', 'ignore'))
+    text = unicode(article.cleaned_text)
+    title = unicode(article.title)
     summaries = Summarize(title, text, limit)
     return {
         'text': text,
@@ -218,7 +218,8 @@ def split_sentences(text):
     second to last line adds this item to the s_iter list and the last line returns the full list.
     '''
     
-    sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]["”]?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
+    sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]["\u201d]?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
+    print 'sen',sentences
     s_iter = zip(*[iter(sentences[:-1])] * 2)
     s_iter = [''.join(y).lstrip() for y in s_iter]
     s_iter.append(sentences[-1])
