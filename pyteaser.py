@@ -219,7 +219,6 @@ def split_sentences(text):
     '''
     
     sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]["\u201d]?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
-    print 'sen',sentences
     s_iter = zip(*[iter(sentences[:-1])] * 2)
     s_iter = [''.join(y).lstrip() for y in s_iter]
     s_iter.append(sentences[-1])
