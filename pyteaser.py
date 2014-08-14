@@ -62,9 +62,9 @@ stopWords = set([
     "philippine", "government", "police", "manila"
 ])
 ideal = 20.0
+default_limit = 5
 
-
-def SummarizeUrl(url):
+def SummarizeUrl(url, limit=default_limit):
     summaries = []
     try:
         article = grab_link(url)
@@ -78,21 +78,25 @@ def SummarizeUrl(url):
 
     text = str(article.cleaned_text.encode('utf-8', 'ignore'))
     title = str(article.title.encode('utf-8', 'ignore'))
-    summaries = Summarize(title, text)
-    return summaries
+    summaries = Summarize(title, text, limit)
+    return {
+        'text': text,
+        'title': title,
+        'summaries': summaries
+    }
 
 
-def Summarize(title, text):
+def Summarize(title, text, limit=default_limit):
     summaries = []
     sentences = split_sentences(text)
     keys = keywords(text)
     titleWords = split_words(title)
 
-    if len(sentences) <= 5:
+    if len(sentences) <= limit:
         return sentences
 
     #score setences, and use the top 5 sentences
-    ranks = score(sentences, titleWords, keys).most_common(5)
+    ranks = score(sentences, titleWords, keys).most_common(limit)
     for rank in ranks:
         summaries.append(rank[0])
 
