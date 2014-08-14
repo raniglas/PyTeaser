@@ -220,7 +220,7 @@ def split_sentences(text):
     
     sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]"?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
     s_iter = zip(*[iter(sentences[:-1])] * 2)
-    s_iter = [''.join(map(unicode,y)).lstrip() for y in s_iter]
+    s_iter = [''.join(y).lstrip() for y in s_iter]
     s_iter.append(sentences[-1])
     return s_iter
 
